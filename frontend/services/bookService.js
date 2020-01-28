@@ -1,12 +1,12 @@
 class BookService {
 
     constructor(){
-        this.URI = 'http://localhost:300/api/books'
+        this.URI = 'http://localhost:4000/api/books'
     }
 
     async getBooks(){
         const response = await fetch(this.URI);
-        const books = response.json();
+        const books = await response.json();
 
         return books;
     }
@@ -14,13 +14,25 @@ class BookService {
     async postBook(book){
         const res = await fetch(this.URI, {
             method: 'POST',
-            body: book,
-            
-        })
+            body: book 
+        });
+
+        const data = await res.json();
+        console.log(data);
     }
 
-    delelteBook(){
+    async delelteBook(bookId){
+        const resp = await fetch(`${this.URI}/${bookId}`,{
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE'
+        });
 
+        const data = await resp.json();
+        console.log(data);
     }
 
 }
+
+module.exports = BookService;
